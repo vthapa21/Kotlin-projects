@@ -347,14 +347,6 @@ class CameraHelper (private val context: Context) {
     }
 
 
-//    fun setFlashMode(flashMode: FlashMode){
-//        if(::captureRequestBuilder.isInitialized && ::cameraCaptureSession.isInitialized) {
-//            this.flashMode = flashMode;
-//            applyFlashMode(flashMode);
-//            //cameraCaptureSession.setRepeatingRequest(captureRequestBuilder.build(),null,backgroundHandler);
-//        }
-//    }
-
 
     fun setFlashMode(flashMode: FlashMode){
         this.flashMode = flashMode;
@@ -405,29 +397,6 @@ class CameraHelper (private val context: Context) {
             e.printStackTrace();
     }
 }
-
-    fun setFocusPoint(x:Float, y: Float, textureView: TextureView){
-        if(!::cameraDevice.isInitialized) return;
-        val sensorSize = cameraManager.getCameraCharacteristics(cameraId).get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE);
-        Log.d("A", sensorSize.toString());
-        val focusArea = calculateFocusArea(x,y,textureView.width,textureView.height,sensorSize);
-        captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
-        captureRequestBuilder.set(CaptureRequest.CONTROL_AF_REGIONS, arrayOf(focusArea));
-        captureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,CaptureRequest.CONTROL_AF_TRIGGER_START);
-        cameraCaptureSession.capture(captureRequestBuilder.build(),null,null);
-
-
-}
-    fun calculateFocusArea(x:Float, y: Float, w: Int, h: Int, s: Rect?): MeteringRectangle{
-        val focusAreaSize = 200;
-        val centerX = (x/w * s!!.width()).toInt();
-        val centerY = (y/h * s.height()).toInt();
-        val left = Math.max(centerX - focusAreaSize/ 2,0);
-        val top = Math.max(centerY - focusAreaSize/2 , 0);
-        val right = Math.min(left +focusAreaSize, s.width());
-        val bottom = Math.min(top+ focusAreaSize, s.height());
-        return MeteringRectangle(left,top,right - left, bottom - top, MeteringRectangle.METERING_WEIGHT_MAX)
-    }
 
 
 }

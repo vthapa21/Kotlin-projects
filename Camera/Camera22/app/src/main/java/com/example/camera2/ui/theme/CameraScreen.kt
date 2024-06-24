@@ -186,12 +186,7 @@ fun CameraPreview(cameraHelper: CameraHelper, textureView: TextureView, modifier
                         }
                     }
                 }
-//                setOnTouchListener { v, event ->
-//                    if(event.action == MotionEvent.ACTION_DOWN){
-//                        cameraHelper.setFocusPoint(event.x, event.y,this)
-//                    }
-//                    true
-//                }
+
             }
         } )
 }
