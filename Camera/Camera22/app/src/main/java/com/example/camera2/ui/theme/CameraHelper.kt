@@ -30,7 +30,6 @@ import org.tensorflow.lite.support.common.FileUtil
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
-//import org.tensorflow.lite.task.vision.detector.Detection
 import java.io.File
 import java.io.FileOutputStream
 import java.lang.RuntimeException
@@ -48,13 +47,11 @@ class CameraHelper (private val context: Context) {
     private lateinit var cameraId: String;
     private var isFrontCamera: Boolean = false;
     var isObjectDetection: Boolean = false;
-    //private lateinit var objectDetectorHelper: ObjectDetectorHelper;
     private lateinit var imageProcessor: ImageProcessor;
     private lateinit var model: SsdMobilenetv11
     private val paint = Paint();
     private lateinit var labels:List<String>
     private var detectedObject: String = "";
-    private var isFlashOn: Boolean = false;
     private var flashMode: FlashMode = FlashMode.OFF;
 
     companion object{
@@ -190,11 +187,6 @@ class CameraHelper (private val context: Context) {
                 }
             }
         }
-        //var textureCanvas = textureView.lockCanvas();
-        //if(textureCanvas!=null){
-        //textureCanvas.drawBitmap(mutable,0f, 0f, null);
-        //textureView.unlockCanvasAndPost(textureCanvas);}
-
     }
 
     private fun showToast(message:String){
@@ -249,8 +241,6 @@ class CameraHelper (private val context: Context) {
         MediaScannerConnection.scanFile(context, arrayOf(file.absolutePath),null){
             path,uri ->
         }
-
-
     }
 
 
@@ -390,7 +380,6 @@ class CameraHelper (private val context: Context) {
                         CaptureRequest.CONTROL_AE_MODE_ON
                     );
                     captureRequestBuilder.set(CaptureRequest.FLASH_MODE,CaptureRequest.FLASH_MODE_TORCH)
-
                 }}
 }
         }catch (e: CameraAccessException){

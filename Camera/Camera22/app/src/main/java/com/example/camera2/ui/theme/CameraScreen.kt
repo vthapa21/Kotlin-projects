@@ -27,7 +27,6 @@ import com.example.camera2.R
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 
-
 enum class FlashMode{
     OFF,
     ON,
@@ -144,14 +143,10 @@ fun CameraScreen(cameraHelper: CameraHelper) {
                     dropDownExpanded = false
                 })
             }
-
-
         }
 
         }
     }
-
-
 
 
 @Composable
@@ -190,5 +185,4 @@ fun CameraPreview(cameraHelper: CameraHelper, textureView: TextureView, modifier
             }
         } )
 }
-
 
