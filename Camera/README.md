@@ -7,7 +7,10 @@
 **2. Object detection feature which is powered by a very light -weight SSD MobileNet v1 model with labels of 90 objects.**
 
 
+**3. Supports 4 flash modes(On/off/auto/torch)**
+
 **Tested on Android 14**
 
-Note: Pictures captured will be stored in DCIM folder. 
-
+Note: 
+1. Pictures captured will be stored in DCIM folder. 
+2. Flash is missed out from the captured pic.
