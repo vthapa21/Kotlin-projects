@@ -6,8 +6,7 @@
 
 **2. Object detection feature which is powered by a very light -weight SSD MobileNet v1 model with labels of 90 objects.**
 
-
-**3. Supports 4 flash modes(On/off/auto/torch)**
+**3. Supports 4 flash modes(On/off/auto/torch).**
 
 **Tested on Android 14**
 
