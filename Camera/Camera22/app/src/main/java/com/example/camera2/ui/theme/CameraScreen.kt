@@ -3,13 +3,17 @@ package com.example.camera2.ui.theme
 import android.graphics.SurfaceTexture
 import android.view.MotionEvent
 import android.view.TextureView
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -25,7 +29,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.camera2.R
 import androidx.compose.runtime.*
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
+
 
 enum class FlashMode{
     OFF,
@@ -49,9 +57,12 @@ fun CameraScreen(cameraHelper: CameraHelper) {
     var dropDownExpanded by remember {
         mutableStateOf(false)
     }
+    var tapPosition by remember {
+        mutableStateOf<Pair<Float,Float>?>(null)
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        CameraPreview(cameraHelper, textureView, Modifier.fillMaxSize())
+        CameraPreview(cameraHelper, textureView, Modifier.fillMaxSize(), tapPosition)
         Row(modifier = Modifier
             .align(Alignment.BottomCenter)
             .background(Color.White)
@@ -143,14 +154,22 @@ fun CameraScreen(cameraHelper: CameraHelper) {
                     dropDownExpanded = false
                 })
             }
+
+
         }
 
         }
     }
 
 
+
+
 @Composable
-fun CameraPreview(cameraHelper: CameraHelper, textureView: TextureView, modifier: Modifier){
+fun CameraPreview(cameraHelper: CameraHelper, textureView: TextureView, modifier: Modifier,
+                  tapPosition: Pair<Float,Float>?){
+    var markerPosition by remember {
+        mutableStateOf<Pair<Float,Float>?>(null)
+    }
     AndroidView(
         factory ={
             textureView.apply {
@@ -181,8 +200,36 @@ fun CameraPreview(cameraHelper: CameraHelper, textureView: TextureView, modifier
                         }
                     }
                 }
-
+                setOnTouchListener { v, event ->
+                    if(event.action == MotionEvent.ACTION_DOWN){
+                        val position = Pair(event.x,event.y)
+                        markerPosition = position
+                        cameraHelper.setFocusPoint(event.x,event.y,this)
+                        v.performClick();
+                    }
+                    true
+                }
             }
         } )
+    markerPosition?.let{
+        showTapMarker(it)
+        LaunchedEffect(markerPosition){
+            delay(300L)
+            markerPosition =null
+        }
+    }
+}
+
+@Composable
+fun showTapMarker(position: Pair<Float,Float>){
+    Image(
+        painter = painterResource(R.drawable.focus),
+        contentDescription = null,
+        modifier = Modifier
+            .size(80.dp)
+            .offset {
+                IntOffset(position.first.toInt() - 50, position.second.toInt() - 50)
+            }
+    )
 }
 
